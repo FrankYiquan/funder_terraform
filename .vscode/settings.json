@@ -1,0 +1,7 @@
+{
+  "python.analysis.extraPaths": [
+    "lambda-code",
+    "lambda-code/layers/shared_utils_layer/python",
+    "lambda-code/layers/requests_layer/python"
+  ]
+}
