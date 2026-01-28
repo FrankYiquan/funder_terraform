@@ -40,7 +40,7 @@ resource "aws_iam_role_policy" "lambda_logs" {
 }
 
 ############################################
-# S3 Write Permissions (your buckets)
+# S3 Write Permissions
 ############################################
 resource "aws_iam_role_policy" "lambda_s3_write" {
   name = "lambda-s3-write-policy"
@@ -81,7 +81,7 @@ resource "aws_iam_role_policy" "lambda_sqs" {
           "sqs:GetQueueAttributes",
           "sqs:ChangeMessageVisibility"
         ],
-        Resource = var.sqs_queue_arn
+        Resource = var.sqs_queue_arns
       }
     ]
   })

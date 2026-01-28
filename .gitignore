@@ -16,3 +16,5 @@ terraform.tfstate.backup
 
 # Crash logs
 crash.log
+
+.vscode/

@@ -7,12 +7,12 @@ resource "aws_sqs_queue" "dlq" {
 resource "aws_sqs_queue" "queue" {
   name = "${var.name}-Queue"
 
-  visibility_timeout_seconds = 45
+  visibility_timeout_seconds = 360
   message_retention_seconds  = 1800
 
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.dlq.arn
-    maxReceiveCount     = 2
+    maxReceiveCount     = 1
   })
 }
 
@@ -42,7 +42,7 @@ resource "aws_lambda_function" "lambda" {
     }
   }
 
-  timeout = 30
+  timeout = 60
 }
 
 # SQS → Lambda

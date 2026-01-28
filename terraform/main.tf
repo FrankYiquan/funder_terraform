@@ -31,7 +31,10 @@ module "lambda_role" {
   grant_bucket_arn   = data.aws_s3_bucket.grant.arn
   linking_bucket_arn = data.aws_s3_bucket.linking.arn
 
-  sqs_queue_arn      = module.nsf.queue_arn   
+  sqs_queue_arns = [
+    module.nsf.queue_arn,
+    module.Europoean_Commission.queue_arn
+  ]
 }
 
 
@@ -79,3 +82,18 @@ module "nsf" {
 #   grant_bucket_name  = var.grant_bucket_name
 #   linking_bucket_name = var.linking_bucket_name
 # }
+
+# ----------------------------
+# EUROPEAN RESEARCH COUNCIL FUNDERS PIPELINE
+# ----------------------------
+module "Europoean_Commission" {
+  source             = "./modules/funder_pipeline"
+  name               = "Europoean_Commission"
+  lambda_source_dir  = "../lambda-code/European_Research_Council"
+  handler            = "handler.lambda_handler"
+  layers             = [module.shared_utils.arn, module.requests_layer.arn]
+  lambda_role_arn    = module.lambda_role.arn
+
+  grant_bucket_name  = var.grant_bucket_name
+  linking_bucket_name = var.linking_bucket_name
+}

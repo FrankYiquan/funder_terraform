@@ -28,11 +28,12 @@ def store_grant_and_linking(funder_name: str, doi: str, grant_result: str) -> di
     # Extract <grantId>...</grantId>
     match = re.search(r"<grantId>(.*?)</grantId>", grant_result)
     award_id = match.group(1) if match else "unknown"
+    safe_award_id = award_id.replace("/", "_")
 
     # ----------------------------
     # Write Grant XML
     # ----------------------------
-    grant_key = f"{safe_funder}/{award_id}_{timestamp}_{short_id}.xml"
+    grant_key = f"{safe_funder}/{safe_award_id}_{timestamp}_{short_id}.xml"
 
     s3.put_object(
         Bucket=GRANT_BUCKET_NAME,
@@ -63,7 +64,7 @@ def store_grant_and_linking(funder_name: str, doi: str, grant_result: str) -> di
     }
 
     normalized_doi = doi.replace("/", "_")
-    linking_key = f"{normalized_doi}/{award_id}.json"
+    linking_key = f"{normalized_doi}/{safe_award_id}.json"
 
     linking_body = json.dumps(asset_grant)
 
