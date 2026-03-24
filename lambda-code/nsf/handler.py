@@ -5,6 +5,7 @@ from datetime import datetime
 import logging
 
 from utils.output_s3 import store_grant_and_linking
+from utils.schema_extract import escape_xml
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -69,6 +70,7 @@ def get_award_from_NSF(award_id: str) -> str:
                 status = "HISTORY"
 
         title = award.get("title")
+        title = escape_xml(title)
         award_id = award.get("id")
         grant_url = f"https://www.nsf.gov/awardsearch/show-award?AWD_ID={award_id}"
 
@@ -76,6 +78,7 @@ def get_award_from_NSF(award_id: str) -> str:
     <grantId>{award_id}</grantId>
     <grantName>{title}</grantName>
     <funderCode>{funderCode}</funderCode>
+    <currencyOfAmount>researchgrant.currency.usd</currencyOfAmount>
     <amount>{amount}</amount>
     <startDate>{startDate}</startDate>
     <endDate>{endDate}</endDate>
