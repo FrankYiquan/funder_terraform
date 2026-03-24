@@ -18,3 +18,5 @@ terraform.tfstate.backup
 crash.log
 
 .vscode/
+
+.DS_Store
